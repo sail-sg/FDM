@@ -1,12 +1,35 @@
 # Fast Diffusion Model
 
 This is an official PyTorch implementation of Fast Diffusion Model.
+## Results
+Image synthesis performance (FID) under different million training images (Mimg) is as follows.
+|  Dataset | Duration<br>(Mimg) |  EDM | EDM-FDM |  VP  | VP-FDM |   VE  | VE-FDM |
+|:--------:|:---------------:|:----:|:-------:|:----:|:------:|:-----:|:------:|
+| CIFAR10 |        50       | 5.76 |   2.17  | 2.74 |  2.74  | 49.47 |  10.01 |
+| CIFAR10 |       100       | 1.99 |   1.93  | 2.24 |  2.24  |  4.05 |  3.26  |
+| CIFAR10 |       150       | 1.92 |   1.83  | 2.19 |  2.13  |  3.27 |  3.00  |
+| CIFAR10 |       200       | 1.88 |   1.79  | 2.15 |  2.08  |  3.09 |  2.85  |
+|   FFHQ   |        50       | 3.21 |   3.27  | 3.07 |  12.49 | 96.49 |  93.72 |
+|   FFHQ   |       100       | 2.87 |   2.69  | 2.83 |  2.80  | 94.14 |  88.42 |
+|   FFHQ   |       150       | 2.69 |   2.63  | 2.73 |  2.53  | 79.20 |  4.73  |
+|   FFHQ   |       200       | 2.65 |   2.59  | 2.69 |  2.43  | 38.97 |  3.04  |
+|  AFHQv2  |        50       | 2.62 |   2.73  | 3.46 |  25.70 | 57.93 |  54.41 |
+|  AFHQv2  |       100       | 2.57 |   2.05  | 2.81 |  2.65  | 57.87 |  52.45 |
+|  AFHQv2  |       150       | 2.44 |   1.96  | 2.72 |  2.47  | 57.69 |  50.53 |
+|  AFHQv2  |       200       | 2.37 |   1.93  | 2.61 |  2.39  | 57.48 |  47.30 |
 
-**Abstract**: *Despite their success in real data synthesis, diffusion models (DMs) often suffer from slow and costly training and sampling issues, limiting their broader applications. To mitigate this, we propose a Fast Diffusion Model (FDM) which improves the diffusion process of DMs through the lens of stochastic optimization to speed up both training and sampling. Specifically, we first find that the diffusion process of DMs accords with the stochastic optimization process of stochastic gradient descent (SGD) on a stochastic time-variant problem. Note that momentum SGD uses both the current gradient and an extra momentum, achieving more stable and faster convergence. We are inspired to introduce momentum into the diffusion process to accelerate both training and sampling. However, this comes with the challenge of deriving the noise perturbation kernel from the momentum-based diffusion process. To this end, we frame the momentum-based process as a Damped Oscillation system whose critically damped state---the kernel solution---avoids oscillation and thus has a faster convergence speed of the diffusion process. Empirical results show that our FDM can be applied to several popular DM frameworks, e.g. VP, VE, and EDM, and reduces their training cost by about $50\%$ with comparable image synthesis performance on CIFAR-10, FFHQ, and AFHQv2 datasets. Moreover, FDM  decreases  their sampling steps by about $3\times$ to achieve similar performance under the same deterministic samplers.*
-
-## Requirements
-All experiments were conducted using PyTorch 1.13.0, CUDA 11.7.1, and CuDNN 8.5.0. We strongly recommend to use the [provided Dockerfile](./Dockerfile) to build an image to reproduce our experiments.
-
+Image synthesis performance (FID) under different inference cost on AFHQv2 with EDM sampler.
+| NFE |  EDM | EDM-FDM |  VP  | VP-FDM |   VE  | VE-FDM |
+|:---:|:----:|:-------:|:----:|:------:|:-----:|:------:|
+|  25 | 2.78 |   2.32  | 2.88 |  2.59  | 61.04 |  48.29 |
+|  49 | 2.39 |   1.93  | 2.64 |  2.41  | 57.59 |  47.49 |
+|  79 | 2.37 |   1.93  | 2.61 |  2.39  | 57.48 |  47.30 |
+Image synthesis performance (FID) under different inference cost on AFHQv2 with DPM-Solver++.
+| NFE |  EDM | EDM-FDM |  VP  | VP-FDM |   VE  | VE-FDM |
+|:---:|:----:|:-------:|:----:|:------:|:-----:|:------:|
+|  25 | 2.60 |   2.09  | 2.99 |  2.64  | 59.26 |  49.51 |
+|  49 | 2.42 |   1.98  | 2.79 |  2.45  | 59.16 |  48.68 |
+|  79 | 2.39 |   1.95  | 2.78 |  2.42  | 58.91 |  48.66 |
 ## Preparing datasets
 **CIFAR-10:** Download the [CIFAR-10 python version](https://www.cs.toronto.edu/~kriz/cifar.html) and convert to ZIP archive:
 
@@ -103,3 +126,5 @@ torchrun --standalone --nproc_per_node=8 generate.py --outdir=fid \
 torchrun --standalone --nproc_per_node=8 fid.py calc --images=fid \
     --ref=fid-refs/cifar10-32x32.npz
 ```
+
+Note that the generated images should be evaluated against the same reference dataset that the model was originally trained on. Please ensure to replace the `--ref` option with the correct one (*e.g.*, `fid-refs/ffhq-64x64.npz` or `fid-refs/afhqv2-64x64.npz`) to obtain the right FID score.

@@ -67,7 +67,7 @@ def parse_int_list(s):
 @click.option('--augment',       help='Augment probability', metavar='FLOAT',                       type=click.FloatRange(min=0, max=1), default=0.12, show_default=True)
 @click.option('--xflip',         help='Enable dataset x-flips', metavar='BOOL',                     type=bool, default=False, show_default=True)
 @click.option('--warmup_ite',    help='Loss weight warmup iteration', metavar='FLOAT',              type=float, default=None, show_default=True)
-@click.option('--fdm_multipler', help='FDM multipler', metavar='FLOAT',                             type=float, default=2.0)
+@click.option('--fdm_multiplier', help='FDM multiplier', metavar='FLOAT',                             type=float, default=2.0)
 
 # Performance-related.
 @click.option('--fp16',          help='Enable mixed-precision training', metavar='BOOL',            type=bool, default=False, show_default=True)
