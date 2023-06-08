@@ -24,12 +24,14 @@ Image synthesis performance (FID) under different inference cost on AFHQv2 with 
 |  25 | 2.78 |   2.32  | 2.88 |  2.59  | 61.04 |  48.29 |
 |  49 | 2.39 |   1.93  | 2.64 |  2.41  | 57.59 |  47.49 |
 |  79 | 2.37 |   1.93  | 2.61 |  2.39  | 57.48 |  47.30 |
+
 Image synthesis performance (FID) under different inference cost on AFHQv2 with DPM-Solver++.
 | NFE |  EDM | EDM-FDM |  VP  | VP-FDM |   VE  | VE-FDM |
 |:---:|:----:|:-------:|:----:|:------:|:-----:|:------:|
 |  25 | 2.60 |   2.09  | 2.99 |  2.64  | 59.26 |  49.51 |
 |  49 | 2.42 |   1.98  | 2.79 |  2.45  | 59.16 |  48.68 |
 |  79 | 2.39 |   1.95  | 2.78 |  2.42  | 58.91 |  48.66 |
+
 ## Preparing datasets
 **CIFAR-10:** Download the [CIFAR-10 python version](https://www.cs.toronto.edu/~kriz/cifar.html) and convert to ZIP archive:
 
