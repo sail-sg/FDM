@@ -1,6 +1,8 @@
 # Fast Diffusion Model
 
 This is an official PyTorch implementation of Fast Diffusion Model.
+
+Acknowledgement: This repo is based on the following amazing projects: [EDM](https://github.com/NVlabs/edm).
 ## Results
 Image synthesis performance (FID) under different million training images (Mimg) is as follows.
 |  Dataset | Duration<br>(Mimg) |  EDM | EDM-FDM |  VP  | VP-FDM |   VE  | VE-FDM |
@@ -31,8 +33,6 @@ Image synthesis performance (FID) under different inference cost on AFHQv2 with 
 |  25 | 2.60 |   2.09  | 2.99 |  2.64  | 59.26 |  49.51 |
 |  49 | 2.42 |   1.98  | 2.79 |  2.45  | 59.16 |  48.68 |
 |  79 | 2.39 |   1.95  | 2.78 |  2.42  | 58.91 |  48.66 |
-
-Acknowledgement: This repo is based on the following amazing projects: [EDM](https://github.com/NVlabs/edm).
 
 ## Preparing datasets
 **CIFAR-10:** Download the [CIFAR-10 python version](https://www.cs.toronto.edu/~kriz/cifar.html) and convert to ZIP archive:
