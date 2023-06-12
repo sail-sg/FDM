@@ -91,7 +91,7 @@ torchrun --standalone --nproc_per_node=8 train.py --outdir=training-output \
     --batch=256 --cres=1,2,2,2 --lr=2e-4 --dropout=0.05 --augment=0.15 \
     --precond=fdm_vp --warmup_ite=400 --fdm_multipler=1
 
-VE-FDM
+# VE-FDM
 torchrun --standalone --nproc_per_node=8 train.py --outdir=training-output \
     --data=datasets/ffhq-64x64.zip --cond=0 --arch=ncsnpp \
     --batch=256 --cres=1,2,2,2 --lr=2e-4 --dropout=0.05 --augment=0.15 \
@@ -112,7 +112,7 @@ torchrun --standalone --nproc_per_node=8 train.py --outdir=training-output \
     --batch=256 --cres=1,2,2,2 --lr=2e-4 --dropout=0.25 --augment=0.15 \
     --precond=fdm_vp --warmup_ite=400
 
-VE-FDM
+# VE-FDM
 torchrun --standalone --nproc_per_node=8 train.py --outdir=training-output \
     --data=datasets/afhqv2-64x64.zip --cond=0 --arch=ncsnpp \
     --batch=256 --cres=1,2,2,2 --lr=2e-4 --dropout=0.25 --augment=0.15 \
