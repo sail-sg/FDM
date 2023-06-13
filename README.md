@@ -1,6 +1,17 @@
 # Fast Diffusion Model
 
-This is an official PyTorch implementation of Fast Diffusion Model.
+This is an official PyTorch implementation of Fast Diffusion Model. See the paper [here](https://arxiv.org/abs/2306.06991). If you find our FDM helpful or heuristic to your projects, please cite this paper and also star this repository. Thanks!
+
+```tex
+@misc{wu2023fast,
+      title={Fast Diffusion Model}, 
+      author={Zike Wu and Pan Zhou and Kenji Kawaguchi and Hanwang Zhang},
+      year={2023},
+      eprint={2306.06991},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 
 Acknowledgement: This repo is based on the following amazing projects: [EDM](https://github.com/NVlabs/edm).
 ## Results
