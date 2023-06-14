@@ -2,7 +2,7 @@
 
 This is an official PyTorch implementation of Fast Diffusion Model. See the paper [here](https://arxiv.org/abs/2306.06991). If you find our FDM helpful or heuristic to your projects, please cite this paper and also star this repository. Thanks!
 
-```tex
+```bibtex
 @misc{wu2023fast,
       title={Fast Diffusion Model}, 
       author={Zike Wu and Pan Zhou and Kenji Kawaguchi and Hanwang Zhang},
