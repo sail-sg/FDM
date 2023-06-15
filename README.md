@@ -133,7 +133,7 @@ torchrun --standalone --nproc_per_node=8 train.py --outdir=training-output \
     --precond=fdm_ve --warmup_ite=400
 ```
 
-### Calculating FID
+## Calculating FID
 To compute Fr&eacute;chet inception distance (FID) for a given model and sampler, first generate 50,000 random images and then compare them against the dataset reference statistics using `fid.py`, replace `$PATH_TO_CHECKPOINT` with the path to the checkpoint:
 
 ```.bash
