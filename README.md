@@ -45,6 +45,9 @@ Image synthesis performance (FID) under different inference cost on AFHQv2 with 
 |  49 | 2.42 |   1.98  | 2.79 |  2.45  | 59.16 |  48.68 |
 |  79 | 2.39 |   1.95  | 2.78 |  2.42  | 58.91 |  48.66 |
 
+## Requirements
+All experiments were conducted using PyTorch 1.13.0, CUDA 11.7.1, and CuDNN 8.5.0. We strongly recommend to use the [provided Dockerfile](./Dockerfile) to build an image to reproduce our experiments.
+
 ## Preparing datasets
 **CIFAR-10:** Download the [CIFAR-10 python version](https://www.cs.toronto.edu/~kriz/cifar.html) and convert to ZIP archive:
 
