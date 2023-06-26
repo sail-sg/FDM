@@ -1,12 +1,18 @@
-# Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# Copyright 2023 Garena Online Private Limited
 #
-# This work is licensed under a Creative Commons
-# Attribution-NonCommercial-ShareAlike 4.0 International License.
-# You should have received a copy of the license along with this
-# work. If not, see http://creativecommons.org/licenses/by-nc-sa/4.0/
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-"""Generate random images using the techniques described in the paper
-"Elucidating the Design Space of Diffusion-Based Generative Models"."""
+"""Generate random images using EDM Sampler and DPM-Solver++.""" 
 
 import os
 import re
@@ -18,9 +24,10 @@ import torch
 import PIL.Image
 import dnnlib
 from torch_utils import distributed as dist
+from dpm_solver import NoiseScheduleEDM, DPM_Solver
 
 #----------------------------------------------------------------------------
-# Proposed EDM sampler (Algorithm 2).
+# EDM sampler
 
 def edm_sampler(
     net, latents, class_labels=None, randn_like=torch.randn_like,
@@ -57,6 +64,33 @@ def edm_sampler(
             d_prime = (x_next - denoised) / t_next
             x_next = x_hat + (t_next - t_hat) * (0.5 * d_cur + 0.5 * d_prime)
 
+    return x_next
+
+#----------------------------------------------------------------------------
+# DPM-Solver++
+
+def ablation_sampler(
+    net, latents, class_labels=None, randn_like=torch.randn_like,
+    num_steps=18, sigma_min=0.002, sigma_max=80, rho=7,
+    denoise=True, **kwargs
+):
+    x_next = latents.to(torch.float64) * sigma_max
+    ns = NoiseScheduleEDM('linear')
+    with torch.no_grad():
+        noise_pred_fn = lambda x, t: (x - net(x, t, class_labels).to(torch.float64)) / t
+        dpm_solver = DPM_Solver(noise_pred_fn, ns, algorithm_type="dpmsolver++")
+        # Initial sample
+        x_next = dpm_solver.sample(
+            x_next,
+            steps=num_steps - 1 if denoise else num_steps,
+            t_start=sigma_max,
+            t_end=sigma_min,
+            order=3,
+            skip_type="logSNR",
+            method="singlestep",
+            denoise_to_zero=denoise,
+            lower_order_final=True,
+        )
     return x_next
 
 #----------------------------------------------------------------------------
@@ -113,6 +147,7 @@ def parse_int_list(s):
 @click.option('--S_min', 'S_min',          help='Stoch. min noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default=0, show_default=True)
 @click.option('--S_max', 'S_max',          help='Stoch. max noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default='inf', show_default=True)
 @click.option('--S_noise', 'S_noise',      help='Stoch. noise inflation', metavar='FLOAT',                          type=float, default=1, show_default=True)
+@click.option('--solver',                  help='Ablate ODE solver', metavar='edm|dpm',                             type=click.Choice(['edm', 'dpm']), default='edm')
 
 def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, device=torch.device('cuda'), **sampler_kwargs):
     dist.init()
@@ -153,7 +188,7 @@ def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, device=
 
         # Generate images.
         sampler_kwargs = {key: value for key, value in sampler_kwargs.items() if value is not None}
-        sampler_fn = edm_sampler
+        sampler_fn = edm_sampler if sampler_kwargs.pop('solver', 'edm') == 'edm' else ablation_sampler
         images = sampler_fn(net, latents, class_labels, randn_like=rnd.randn_like, **sampler_kwargs)
 
         # Save images.

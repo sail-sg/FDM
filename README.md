@@ -13,7 +13,7 @@ This is an official PyTorch implementation of Fast Diffusion Model. See the pape
 }
 ```
 
-Acknowledgement: This repo is based on the following amazing projects: [EDM](https://github.com/NVlabs/edm).
+Acknowledgement: This repo is based on the following amazing projects: [EDM](https://github.com/NVlabs/edm) and [DPM-Solver](https://github.com/LuChengTHU/dpm-solver).
 ## Results
 Image synthesis performance (FID) under different million training images (Mimg) is as follows.
 |  Dataset | Duration<br>(Mimg) |  EDM | EDM-FDM |  VP  | VP-FDM |   VE  | VE-FDM |
@@ -145,4 +145,4 @@ torchrun --standalone --nproc_per_node=8 fid.py calc --images=fid \
     --ref=fid-refs/cifar10-32x32.npz
 ```
 
-Note that the generated images should be evaluated against the same reference dataset that the model was originally trained on. Please ensure to replace the `--ref` option with the correct one (*e.g.*, `fid-refs/ffhq-64x64.npz` or `fid-refs/afhqv2-64x64.npz`) to obtain the right FID score.
+Note that the generated images should be evaluated against the same reference dataset that the model was originally trained on. Please ensure to replace the `--ref` option with the correct one (*e.g.*, `fid-refs/ffhq-64x64.npz` or `fid-refs/afhqv2-64x64.npz`) to obtain the right FID score. Addtionally, you can use `--solver=dpm` option to generate images with DPM-Solver++.
