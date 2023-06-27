@@ -48,6 +48,9 @@ Image synthesis performance (FID) under different inference cost on AFHQv2 with 
 ## Requirements
 All experiments were conducted using PyTorch 1.13.0, CUDA 11.7.1, and CuDNN 8.5.0. We strongly recommend to use the [provided Dockerfile](./Dockerfile) to build an image to reproduce our experiments.
 
+## Pre-trained models
+We provide pre-trained models for our FDMs along with the baseline models on Hugging Face. Download the checkpoints [here](https://huggingface.co/sail/FDM/tree/main).
+
 ## Preparing datasets
 **CIFAR-10:** Download the [CIFAR-10 python version](https://www.cs.toronto.edu/~kriz/cifar.html) and convert to ZIP archive:
 
